@@ -1,12 +1,12 @@
 # When go to stylish website.
 # Then stylish logo should be shown.
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import allure
+from allure_commons.types import AttachmentType
 
 import logging
 
@@ -16,7 +16,6 @@ logger.setLevel(logging.DEBUG)
 
 # 截圖
 import pyautogui
-
 
 @allure.step("Check whether logo element shows: ")
 def set_driver():
@@ -36,11 +35,12 @@ def element_shown(path):
         logo_shows = wait.until(EC.presence_of_element_located(
             (By.XPATH, path)
         ))
-        # 設想是在logo出現後driver quit前做截圖，但放在這邊是不是有點怪..
-        myScreenshot = pyautogui.screenshot()
-        myScreenshot.save(r'../screenshot.png')
-        # 印出 log information 在 allure report
-        logger.info('Logged INFO message')
+        # # 設想是在logo出現後driver quit前做截圖，但放在這邊是不是有點怪..
+        # myScreenshot = pyautogui.screenshot()
+        # myScreenshot.save(r'../screenshot.png')
+        # # 印出 log information 在 allure report
+        # logger.info('Logged INFO message')
+        allure.attach(driver.get_screenshot_as_png(), name="Logo_Screenshot", attachment_type=AttachmentType.PNG)
     finally:
         driver.quit()
 
