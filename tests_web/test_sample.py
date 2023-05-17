@@ -9,12 +9,14 @@ from selenium.webdriver.chrome.options import Options
 import allure
 
 import logging
+
 # 創立 logger 記錄器，指定級別
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 # 截圖
 import pyautogui
+
 
 @allure.step("Check whether logo element shows: ")
 def set_driver():
@@ -26,12 +28,13 @@ def set_driver():
     wait = WebDriverWait(driver, 5)
     return driver, wait
 
+
 def element_shown(path):
     driver, wait = set_driver()
     try:
         driver.get('http://54.201.140.239/')
         logo_shows = wait.until(EC.presence_of_element_located(
-            (By.XPATH,path)
+            (By.XPATH, path)
         ))
         # 設想是在logo出現後driver quit前做截圖，但放在這邊是不是有點怪..
         myScreenshot = pyautogui.screenshot()
@@ -40,6 +43,7 @@ def element_shown(path):
         logger.info('Logged INFO message')
     finally:
         driver.quit()
+
 
 def test_logo():
     path = "//*[@class='header__logo']"
