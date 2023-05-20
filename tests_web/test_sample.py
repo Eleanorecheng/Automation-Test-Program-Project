@@ -14,16 +14,17 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-driver = webdriver.Chrome()
-wait = WebDriverWait(driver, 5)
+# Chromedriver in Headless Mode (為了截圖先拿掉了)
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(options=chrome_options)
 
+# driver = webdriver.Chrome()
+wait = WebDriverWait(driver, 5)
 
 @allure.step("Check whether logo element shows: ")
 def test_logo_is_shown():
-    # Chromedriver in Headless Mode (為了截圖先拿掉了)
-    # chrome_options = Options()
-    # chrome_options.add_argument("--headless")
-    # driver = webdriver.Chrome(options=chrome_options)
+
 
     try:
         driver.get('http://54.201.140.239/')
