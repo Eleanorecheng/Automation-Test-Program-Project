@@ -9,8 +9,6 @@ from allure_commons.types import AttachmentType
 import logging
 # 創立 logger 記錄器，指定級別
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
