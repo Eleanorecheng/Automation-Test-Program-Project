@@ -24,7 +24,7 @@ class CategoryPage(PageBase):
         while True:
             self.scroll_down()
             elem = self.find_element(
-                (By.XPATH, f"//div[@class='products' and count(a) > {current_num}]"))
+                (By.XPATH, f"//div[@class='products' and count(a) > {current_num}]"), throw_exception=False)
             current_products = self.find_elements(self.all_products_by_category)
             if elem is None:
                 return current_products
