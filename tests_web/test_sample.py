@@ -1,5 +1,3 @@
-# When go to stylish website.
-# Then stylish logo should be shown.
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -9,22 +7,18 @@ import allure
 from allure_commons.types import AttachmentType
 
 import logging
-
 # 創立 logger 記錄器，指定級別
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 
-driver = webdriver.Chrome()
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--window-size=3072,1920")
+driver = webdriver.Chrome(options=chrome_options)
+
 wait = WebDriverWait(driver, 5)
-
 
 @allure.step("Check whether logo element shows: ")
 def test_logo_is_shown():
-    # Chromedriver in Headless Mode (為了截圖先拿掉了)
-    # chrome_options = Options()
-    # chrome_options.add_argument("--headless")
-    # driver = webdriver.Chrome(options=chrome_options)
-
     try:
         driver.get('http://54.201.140.239/')
         logo_shows = wait.until(EC.presence_of_element_located(
