@@ -1,0 +1,5 @@
+# 忽略 .env 檔案
+.env
+
+# 忽略 pytest_cache 目錄底下所有檔案
+.pytest_cache/*
