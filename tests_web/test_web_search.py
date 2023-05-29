@@ -17,6 +17,5 @@ def test_search(driver, db_cursor, test_input):
     search_db_list = search_page.get_search_result_from_db(db_cursor, test_input)
     logger.info('Verify search result')
     # 用 counter 解決 list 排序不同問題
-    compare = Counter(search_products_list) == Counter(search_db_list)
-    assert compare == True, f'Search result is not correct'
+    assert Counter(search_products_list) == Counter(search_db_list), f'Search result is not correct'
     logger.info('test_search finished')
