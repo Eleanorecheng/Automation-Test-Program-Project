@@ -11,7 +11,7 @@ def test_search(driver, db_cursor, test_input):
     logger.info("Input Search Box")
     search_page.input_search_box(test_input)
     logger.info('Get search result')
-    search_products_list = search_page.get_search_result_info()
+    search_products_list = search_page.scroll_to_load_all_search_result()
     logger.info('Get search result from DB')
 
     search_db_list = search_page.get_search_result_from_db(db_cursor, test_input)

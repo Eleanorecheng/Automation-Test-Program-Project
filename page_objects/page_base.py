@@ -23,8 +23,7 @@ class PageBase():
         except Exception as e:
             if throw_exception:
                 raise e
-            print(e)
-
+            return None
     def find_elements(self, locator, throw_exception=True):
         try:
             elements = WebDriverWait(self.driver, 3).until(
@@ -34,7 +33,7 @@ class PageBase():
         except Exception as e:
             if throw_exception:
                 raise e
-            print(e)
+            return []
     def scroll_down(self):
         return self.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
 
