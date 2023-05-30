@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from page_objects.page_base import PageBase
 
-
 class CategoryPage(PageBase):
     def select_category(self, category):
         return (By.XPATH, f"//a[text() = '{category}']")
@@ -14,17 +13,13 @@ class CategoryPage(PageBase):
     # 所有產品路徑
     all_products_by_category = (By.XPATH, "//div[contains(@class, 'product__title')]")
 
-    # scroll down method
-    def scroll_down(self):
-        return self.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
-
     # 滑到最底達到所有element list
     def scroll_to_load_all_product(self):
         current_num = 0
         while True:
             self.scroll_down()
             elem = self.find_element(
-                (By.XPATH, f"//div[@class='products' and count(a) > {current_num}]"), throw_exception=False)
+                (By.XPATH, f"//div[@class='products' and count(a) > {current_num}]"), throw_exception=False, waiting_time=3)
             current_products = self.find_elements(self.all_products_by_category)
             if elem is None:
                 return current_products

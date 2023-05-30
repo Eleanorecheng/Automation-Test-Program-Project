@@ -1,5 +1,5 @@
 import pytest
-from page_objects.categoty_page import CategoryPage
+from page_objects.category_page import CategoryPage
 import logging
 logger = logging.getLogger()
 
