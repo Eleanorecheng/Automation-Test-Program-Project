@@ -2,7 +2,7 @@ from selenium.common import NoSuchElementException # 不能用
 from selenium.webdriver import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.webdriver.common.alert import Alert
 
 class PageBase():
 
@@ -41,10 +41,14 @@ class PageBase():
         element.clear()
         element.send_keys(input_value, Keys.ENTER)
 
-    def get_db_result(self, db_cursor, sql):
-        result_list = []
-        db_cursor.execute(sql)
-        result = db_cursor.fetchall()
-        for key, value in enumerate(result):
-            result_list.append(f'{value["title"]}')
-        return result_list
+    def get_alert_message(self):
+        # create alert object
+        alert = Alert(self.driver)
+
+        # get alert text
+        return alert.text
+
+    def accept_alert(self):
+        # create alert object
+        alert = Alert(self.driver)
+        alert.accept()
