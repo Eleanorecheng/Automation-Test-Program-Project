@@ -1,8 +1,9 @@
 from selenium.webdriver.common.by import By
-from page_objects.page_base import PageBase
+from utils.database_utils import DatabaseUtil
+from utils.page_base import PageBase
 
 
-class SearchPage(PageBase):
+class SearchPage(PageBase, DatabaseUtil):
     search_box = (By.CSS_SELECTOR,'input[class="header__search-input"]')
     all_products_by_search = (By.XPATH, "//div[contains(@class, 'product__title')]")
 
@@ -25,6 +26,7 @@ class SearchPage(PageBase):
                 return search_products_list
             else:
                 current_num = len(current_search)
+
     # def get_search_result_info(self):
     #     get_current_search_result = self.scroll_to_load_all_search_result()
     #     if get_current_search_result is None:

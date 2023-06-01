@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from page_objects.page_base import PageBase
+from utils.page_base import PageBase
 
 class CategoryPage(PageBase):
     def select_category(self, category):
