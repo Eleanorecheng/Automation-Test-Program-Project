@@ -1,5 +1,5 @@
 
-
+# 可以合在一起
 class DatabaseUtil():
 
     def get_db_result(self, db_cursor, sql):
