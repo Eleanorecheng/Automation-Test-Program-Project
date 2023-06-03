@@ -2,7 +2,6 @@ import pytest
 from page_objects.product_page import ProductPage
 import allure
 import logging
-
 logger = logging.getLogger()
 
 @allure.story("Scenario: Color Selection")

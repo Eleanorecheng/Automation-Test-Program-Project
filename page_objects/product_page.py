@@ -2,9 +2,7 @@ import random
 from selenium.webdriver.common.by import By
 from utils.page_base import PageBase
 import logging
-
 logger = logging.getLogger()
-
 
 class ProductPage(PageBase):
     product_name = (By.XPATH, "//div[@class='product__title']")
@@ -15,15 +13,18 @@ class ProductPage(PageBase):
     product_qty_value = (By.XPATH, "//div[@class='product__quantity-value']")
     add_to_cart = (By.XPATH, "//button[@class ='product__add-to-cart-button']")
     number_of_products_in_cart = (By.XPATH, "//div[@class='header__link-icon-cart-number']")
+    random_product = ""
 
     # 隨機取得畫面中的產品
     def select_product_and_enter_product_page(self):
         self.scroll_down()
         elem_random_product = random.choice(self.find_visible_elements(self.product_name))
-        logging.info(f'Selected product: {elem_random_product.text}')
+        self.random_product = elem_random_product.text
+        logging.info(f'Selected product: {self.random_product}')
 
-        self.driver.execute_script("arguments[0].scrollIntoView()", elem_random_product)
-        elem_random_product.click()
+        # self.driver.execute_script("arguments[0].scrollIntoView()", elem_random_product)
+        # elem_random_product.click()
+        self.driver.execute_script("arguments[0].click()", elem_random_product)
         logger.info("Click product")
 
         # self.driver.execute_script("arguments[0].click()", elem_random_product)
@@ -82,3 +83,4 @@ class ProductPage(PageBase):
         elem_number_in_cart = self.find_element(self.number_of_products_in_cart)
         logger.info(f'Number in Cart: {elem_number_in_cart.text}')
         return elem_number_in_cart.text
+
