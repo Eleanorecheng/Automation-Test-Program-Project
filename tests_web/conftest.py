@@ -1,3 +1,4 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -7,6 +8,7 @@ from allure_commons.types import AttachmentType
 import mysql.connector
 import os
 from dotenv import load_dotenv
+from page_objects.loginout_page import LoginoutPage
 
 load_dotenv()
 
@@ -37,5 +39,16 @@ def db_cursor():
     cursor.close()
     db.close()
 
+@pytest.fixture()
+def login(driver, request):
+    driver.get(f"{os.getenv('DOMAIN')}/login.html")
 
+    loginout_page = LoginoutPage(driver)
+    # request 為固定寫法，用於接收 parametrize 中傳入的數值, 即為 {"email": os.environ.get('EMAIL'), "password": os.environ.get('PASSWORD')}
+    email = request.param.get("email")
+    password = request.param.get("password")
+
+    with allure.step("Input email and password to login"):
+        loginout_page.input_email_and_password_to_login(email, password)
+        time.sleep(1) # 不放的話抓不到 alert message --> "error":"no such alert"
 
