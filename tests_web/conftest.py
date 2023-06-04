@@ -10,7 +10,10 @@ import os
 from dotenv import load_dotenv
 from page_objects.loginout_page import LoginoutPage
 
-load_dotenv()
+if 'ENV_FILE' in os.environ:
+    load_dotenv(os.environ['ENV_FILE'])
+else:
+    load_dotenv()
 
 @pytest.fixture()
 def driver():
