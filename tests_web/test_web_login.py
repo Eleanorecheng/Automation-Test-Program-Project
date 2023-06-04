@@ -73,9 +73,9 @@ def test_login_fail_invalid_token(driver, login):
         driver.get(f"{os.getenv('DOMAIN')}/login.html")
         loginout_page.set_local_storage("jwtToken", jwtToken)
         driver.get(f"{os.getenv('DOMAIN')}/profile.html")
+        time.sleep(1)  # 不放的話抓不到 alert message --> "error":"no such alert"
 
     with allure.step("Show Invalid Access Token alert"):
-        time.sleep(1)  # 不放的話抓不到 alert message --> "error":"no such alert"
         get_alert = loginout_page.get_alert_message()
         assert get_alert == "Invalid Access Token", f'Wrong alert message: {get_alert}'
         loginout_page.accept_alert()

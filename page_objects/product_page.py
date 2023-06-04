@@ -33,7 +33,7 @@ class ProductPage(PageBase):
 
     def select_color(self):
         elem_selected_color = random.choice(self.find_elements(self.product_color))
-        logger.info(f'Selected color: {elem_selected_color.text}')
+        logger.info(f'Selected color: {elem_selected_color.get_attribute("data_id")}')
 
         elem_selected_color.click()
         logger.info("Click color")
@@ -83,4 +83,3 @@ class ProductPage(PageBase):
         elem_number_in_cart = self.find_element(self.number_of_products_in_cart)
         logger.info(f'Number in Cart: {elem_number_in_cart.text}')
         return elem_number_in_cart.text
-
