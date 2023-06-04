@@ -6,3 +6,4 @@ urllib3==1.26.6
 mysql-connector-python==8.0.33
 PyMySQL==1.0.3
 webdriver-manager==3.8.6
+pyjwt==2.7.0

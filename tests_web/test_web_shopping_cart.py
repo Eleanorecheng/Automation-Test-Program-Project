@@ -5,7 +5,6 @@ from page_objects.product_page import ProductPage
 from page_objects.shopping_cart_page import ShoppingCartPage
 import allure
 import logging
-
 logger = logging.getLogger()
 
 allure.story("Scenario: Shopping Cart Info Correct")

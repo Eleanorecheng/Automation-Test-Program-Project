@@ -38,4 +38,4 @@ class SearchPage(PageBase):
 
     def get_search_result_from_db(self, db_cursor, input):
         sql = f"SELECT title from product where title like '%{input}%'"
-        return self.database_util.get_db_result(db_cursor, sql)
+        return self.database_util.get_db_result(db_cursor, sql, "title")
