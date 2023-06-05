@@ -8,7 +8,7 @@ from allure_commons.types import AttachmentType
 import mysql.connector
 import os
 from dotenv import load_dotenv
-from page_objects.loginout_page import LoginoutPage
+from page_objects.login_page import LoginPage
 
 if 'ENV_FILE' in os.environ:
     load_dotenv(os.environ['ENV_FILE'])
@@ -46,12 +46,12 @@ def db_cursor():
 def login(driver, request):
     driver.get(f"{os.getenv('DOMAIN')}/login.html")
 
-    loginout_page = LoginoutPage(driver)
+    login_page = LoginPage(driver)
     # request 為固定寫法，用於接收 parametrize 中傳入的數值, 即為 {"email": os.environ.get('EMAIL'), "password": os.environ.get('PASSWORD')}
     email = request.param.get("email")
     password = request.param.get("password")
 
     with allure.step("Input email and password to login"):
-        loginout_page.input_email_and_password_to_login(email, password)
+        login_page.input_email_and_password_to_login(email, password)
         time.sleep(1) # 不放的話抓不到 alert message --> "error":"no such alert"
 

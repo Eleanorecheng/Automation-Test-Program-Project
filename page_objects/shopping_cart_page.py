@@ -22,7 +22,7 @@ class ShoppingCartPage(PageBase):
     def click_cart_icon(self):
         elem_cart_icon = self.find_element(self.cart_icon, clickable=True, waiting_time=15)
         elem_cart_icon.click()
-        self.find_element((By.XPATH, "//div[@class='cart__header']"))
+        self.find_element(self.cart_header_number)
         logger.info(f'Wait until cart-header shows up')
 
     def get_cart_header_number(self):
