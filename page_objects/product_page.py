@@ -124,10 +124,10 @@ class ProductPage(PageBase):
 
     def get_product_info(self):
         product_info = {
-            'title': self.get_title(),
-            'id': self.get_id(),
-            'color': self.get_product_color_name_after_mapping(),
-            'size': self.select_size(),
-            'price': self.get_price()
+            'title': [self.get_title()],
+            'id': [self.get_id()],
+            'color': [self.get_product_color_name_after_mapping()],
+            'size': [self.select_size()],
+            'price': [self.get_price()]
         }
         return product_info
