@@ -50,7 +50,7 @@ class ProductPage(PageBase):
 
         elem_selected_size.click()
         logger.info("Click size")
-        return elem_selected_size.text
+        return elem_selected_size
 
     # 驗證 size default 是不會被選到的
     def check_size_default_status(self):
@@ -127,7 +127,7 @@ class ProductPage(PageBase):
             'title': [self.get_title()],
             'id': [self.get_id()],
             'color': [self.get_product_color_name_after_mapping()],
-            'size': [self.select_size()],
+            'size': [self.select_size().text],
             'price': [self.get_price()]
         }
         return product_info

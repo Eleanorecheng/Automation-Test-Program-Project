@@ -38,7 +38,6 @@ def test_shopping_cart_remove_product(driver, num):
     product_page = ProductPage(driver)
     product_page.select_product_and_enter_product_page()
     products_info = []
-    shopping_cart_info_before_delete = []
 
     with allure.step("Select color and size then add to cart"):
         for i in range(num):
@@ -56,7 +55,7 @@ def test_shopping_cart_remove_product(driver, num):
     with allure.step("Click cart icon and store shopping_cart_info_before_delete"):
         shopping_cart_page.click_cart_icon()
         assert driver.current_url == f"{os.getenv('DOMAIN')}/cart.html"
-        shopping_cart_info_before_delete.append(shopping_cart_page.get_all_shopping_cart_info())
+        shopping_cart_info_before_delete = shopping_cart_page.get_all_shopping_cart_info()
 
     with allure.step("Delete random product"):
         random_index = random.randint(1, num)
@@ -67,7 +66,6 @@ def test_shopping_cart_remove_product(driver, num):
 
     with allure.step("Remove deleted product from products_info and cart_info"):
         products_info.remove(products_info[random_index-1])
-        print("ran", random_index)
         print ("bbbb", shopping_cart_info_before_delete)
 
         shopping_cart_info_after_delete = shopping_cart_info_before_delete.remove(shopping_cart_info_before_delete[random_index-1])
