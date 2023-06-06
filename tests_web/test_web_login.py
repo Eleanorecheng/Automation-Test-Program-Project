@@ -1,5 +1,4 @@
 import os
-import time
 import pytest
 from page_objects.login_page import LoginPage
 import allure
@@ -24,7 +23,6 @@ def test_login_out_success(driver, login, db_cursor):
 
     with allure.step("Logout in /profile.html"):
         login_page.click_logout_btn()
-        time.sleep(1)  # 不放的話抓不到 alert message --> "error":"no such alert"
 
     with allure.step("Check logout success alert"):
         get_alert = login_page.get_alert_message()
@@ -65,7 +63,6 @@ def test_login_fail_invalid_token(driver, login):
 
     with allure.step("Successfully Logout"):
         login_page.click_logout_btn()
-        time.sleep(1)  # 不放的話抓不到 alert message --> "error":"no such alert"
         login_page.get_alert_message()
         login_page.accept_alert()
 
@@ -73,7 +70,6 @@ def test_login_fail_invalid_token(driver, login):
         driver.get(f"{os.getenv('DOMAIN')}/login.html")
         login_page.set_local_storage("jwtToken", jwtToken)
         driver.get(f"{os.getenv('DOMAIN')}/profile.html")
-        time.sleep(1)  # 不放的話抓不到 alert message --> "error":"no such alert"
 
     with allure.step("Show Invalid Access Token alert"):
         get_alert = login_page.get_alert_message()

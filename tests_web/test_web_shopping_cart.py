@@ -1,4 +1,6 @@
 import os
+import random
+
 import pytest
 from page_objects.product_page import ProductPage
 from page_objects.shopping_cart_page import ShoppingCartPage
@@ -13,10 +15,10 @@ def test_shopping_cart_info(driver):
     product_page.select_product_and_enter_product_page()
 
     with allure.step("Select color and size then add to cart"):
-        # color_selected = product_page.select_color().get_attribute("data_id")[-6:]
-        size_selected = product_page.select_size().text
-        get_btn = product_page.get_add_to_cart_btn()
-        get_btn.click()
+        product_page.select_color()
+        product_page.select_size()
+        product_info = product_page.get_product_info()
+        product_page.get_add_to_cart_btn().click()
         get_alert = product_page.get_alert_message()
         assert get_alert == "已加入購物車", f'Wrong alert message'
         product_page.accept_alert()
@@ -26,42 +28,53 @@ def test_shopping_cart_info(driver):
         assert driver.current_url == f"{os.getenv('DOMAIN')}/cart.html"
 
     with allure.step("Check Cart Info is correct"):
-        assert '1' in shopping_cart_page.get_cart_header_number().text, f'Wrong number of product in the cart'
-        assert shopping_cart_page.get_cart_item_name() == product_page.random_product, f'Wrong product name in the cart'
-        # assert color_selected == shopping_cart_page.get_cart_item_color(), f'Wrong product color in the cart'
-        assert size_selected in shopping_cart_page.get_cart_item_size(), f'Wrong product size in the cart'
-
+        shopping_cart_info = shopping_cart_page.get_shopping_cart_info()
+        assert product_info == shopping_cart_info, f'Product_info: {product_info} does nt match shopping_cart_info: {shopping_cart_info}'
 
 allure.story("Scenario: Remove product from cart")
-def test_shopping_cart_remove_product(driver):
+@pytest.mark.parametrize('num', [2])
+def test_shopping_cart_remove_product(driver, num):
     shopping_cart_page = ShoppingCartPage(driver)
     product_page = ProductPage(driver)
     product_page.select_product_and_enter_product_page()
+    products_info = []
+    shopping_cart_info_before_delete = []
 
     with allure.step("Select color and size then add to cart"):
-        for i in range(2):
+        for i in range(num):
             product_page.select_color()
             product_page.select_size()
+
+            products_info.append(product_page.get_product_info())
+
             get_btn = product_page.get_add_to_cart_btn()
             get_btn.click()
             get_alert = product_page.get_alert_message()
             assert get_alert == "已加入購物車", f'Wrong alert message'
             product_page.accept_alert()
 
-    with allure.step("Click cart icon and check Cart Info is correct"):
+    with allure.step("Click cart icon and store shopping_cart_info_before_delete"):
         shopping_cart_page.click_cart_icon()
         assert driver.current_url == f"{os.getenv('DOMAIN')}/cart.html"
-        assert '2' in shopping_cart_page.get_cart_header_number().text, f'Wrong product number in the cart'
+        shopping_cart_info_before_delete.append(shopping_cart_page.get_all_shopping_cart_info())
 
     with allure.step("Delete random product"):
-        shopping_cart_page.delete_random_product().click()
+        random_index = random.randint(1, num)
+        shopping_cart_page.delete_random_product(random_index).click()
         get_alert = product_page.get_alert_message()
         assert get_alert == "已刪除商品", f'Wrong alert message'
         product_page.accept_alert()
 
-    with allure.step("Check Cart Info is correct"):
-        assert '1' in shopping_cart_page.get_cart_header_number().text, f'Wrong product number in the cart'
+    with allure.step("Remove deleted product from products_info and cart_info"):
+        products_info.remove(products_info[random_index-1])
+        print("ran", random_index)
+        print ("bbbb", shopping_cart_info_before_delete)
 
+        shopping_cart_info_after_delete = shopping_cart_info_before_delete.remove(shopping_cart_info_before_delete[random_index-1])
+        print ("ccc", shopping_cart_info_after_delete)
+
+    with allure.step("Check Cart Info is correct by comparing shopping_cart_info_before_delete and shopping_cart_info_after_delete"):
+        assert shopping_cart_info_after_delete != shopping_cart_info_before_delete
 
 allure.story("Scenario: Edit quantity in cart")
 def test_shopping_cart_edit_quantity(driver):

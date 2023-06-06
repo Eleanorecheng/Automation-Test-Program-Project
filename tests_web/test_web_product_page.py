@@ -44,10 +44,10 @@ def test_quantity_disabled(driver):
 
     with allure.step("Increase quantity by clicking 1 time"):
         product_page.increase_quantity(1)
-        assert product_page.check_quantity() == '1', f'quantity is added when add_btn is disabled'
+        assert product_page.get_quantity() == '1', f'quantity is added when add_btn is disabled'
     with allure.step("Decrease quantity by clicking 1 time"):
         product_page.decrease_quantity(1)
-        assert product_page.check_quantity() == '1', f'quantity is minused when add_btn is disabled'
+        assert product_page.get_quantity() == '1', f'quantity is minused when add_btn is disabled'
 
     logger.info("Finish: test_quantity_disabled")
 
@@ -62,10 +62,10 @@ def test_increase_quantity(driver):
 
     with allure.step("Increase quantity by clicking 8 time"):
         product_page.increase_quantity(8)
-        assert product_page.check_quantity() == '9', f'quantity is {product_page.check_quantity()}'
+        assert product_page.get_quantity() == '9', f'quantity is {product_page.get_quantity()}'
     with allure.step("Increase quantity by clicking 2 time"):
         product_page.increase_quantity(2)
-        assert product_page.check_quantity() == '9', f'quantity is {product_page.check_quantity()}'
+        assert product_page.get_quantity() == '9', f'quantity is {product_page.get_quantity()}'
 
     logger.info("Finish: test_increase_quantity")
 
@@ -80,10 +80,10 @@ def test_decrease_quantity(driver):
 
     with allure.step("Increase quantity by clicking 8 time"):
         product_page.increase_quantity(8)
-        assert product_page.check_quantity() == '9', f'quantity is {product_page.check_quantity()}'
+        assert product_page.get_quantity() == '9', f'quantity is {product_page.get_quantity()}'
     with allure.step("Decrease quantity by clicking 8 time"):
         product_page.decrease_quantity(8)
-        assert product_page.check_quantity() == '1', f'quantity is {product_page.check_quantity()}'
+        assert product_page.get_quantity() == '1', f'quantity is {product_page.get_quantity()}'
 
     logger.info("Finish: test_decrease_quantity")
 

@@ -1,4 +1,3 @@
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -53,5 +52,3 @@ def login(driver, request):
 
     with allure.step("Input email and password to login"):
         login_page.input_email_and_password_to_login(email, password)
-        time.sleep(1) # 不放的話抓不到 alert message --> "error":"no such alert"
-
