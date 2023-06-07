@@ -2,8 +2,8 @@ from selenium.webdriver.common.by import By
 from utils.database_utils import DatabaseUtil
 from utils.page_base import PageBase
 
-
-class SearchPage(PageBase, DatabaseUtil):
+class SearchPage(PageBase):
+    database_util = DatabaseUtil()
     search_box = (By.CSS_SELECTOR,'input[class="header__search-input"]')
     all_products_by_search = (By.XPATH, "//div[contains(@class, 'product__title')]")
 
@@ -38,4 +38,4 @@ class SearchPage(PageBase, DatabaseUtil):
 
     def get_search_result_from_db(self, db_cursor, input):
         sql = f"SELECT title from product where title like '%{input}%'"
-        return self.get_db_result(db_cursor, sql)
+        return self.database_util.get_db_result(db_cursor, sql, "title")

@@ -7,13 +7,17 @@ from allure_commons.types import AttachmentType
 import mysql.connector
 import os
 from dotenv import load_dotenv
+from page_objects.login_page import LoginPage
 
-load_dotenv()
+if 'ENV_FILE' in os.environ:
+    load_dotenv(os.environ['ENV_FILE'])
+else:
+    load_dotenv()
 
 @pytest.fixture()
 def driver():
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
@@ -37,5 +41,14 @@ def db_cursor():
     cursor.close()
     db.close()
 
+@pytest.fixture()
+def login(driver, request):
+    driver.get(f"{os.getenv('DOMAIN')}/login.html")
 
+    login_page = LoginPage(driver)
+    # request 為固定寫法，用於接收 parametrize 中傳入的數值, 即為 {"email": os.environ.get('EMAIL'), "password": os.environ.get('PASSWORD')}
+    email = request.param.get("email")
+    password = request.param.get("password")
 
+    with allure.step("Input email and password to login"):
+        login_page.input_email_and_password_to_login(email, password)

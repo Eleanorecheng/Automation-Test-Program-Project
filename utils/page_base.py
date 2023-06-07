@@ -1,8 +1,8 @@
-from selenium.common import NoSuchElementException # 不能用
 from selenium.webdriver import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.alert import Alert
+
 
 class PageBase():
 
@@ -24,9 +24,10 @@ class PageBase():
             if throw_exception:
                 raise e
             return None
+
     def find_elements(self, locator, throw_exception=True):
         try:
-            elements = WebDriverWait(self.driver, 3).until(
+            elements = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_all_elements_located(locator)
             )
             return elements
@@ -34,8 +35,16 @@ class PageBase():
             if throw_exception:
                 raise e
             return []
+
     def scroll_down(self):
         return self.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
+
+    def find_visible_elements(self, locator):
+        try:
+            element = WebDriverWait(self.driver, 10).until(EC.visibility_of_all_elements_located(locator))
+            return element
+        except Exception as e:
+            raise e
 
     def input_and_send_key(self, element, input_value):
         element.clear()
@@ -43,8 +52,7 @@ class PageBase():
 
     def get_alert_message(self):
         # create alert object
-        alert = Alert(self.driver)
-
+        alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
         # get alert text
         return alert.text
 
