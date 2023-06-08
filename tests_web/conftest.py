@@ -52,3 +52,17 @@ def login(driver, request):
 
     with allure.step("Input email and password to login"):
         login_page.input_email_and_password_to_login(email, password)
+
+@pytest.fixture()
+def login_in_parallel(driver):
+    driver.get(f"{os.getenv('DOMAIN')}/login.html")
+    login_page = LoginPage(driver)
+
+    email = os.getenv('EMAIL')
+    password = os.getenv('PASSWORD')
+
+    with allure.step("Input email and password to login"):
+        login_page.input_email_and_password_to_login(email, password)
+        get_alert = login_page.get_alert_message()
+        assert get_alert == "Login Success", f'Wrong alert message'
+        login_page.accept_alert()
