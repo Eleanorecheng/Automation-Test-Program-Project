@@ -60,3 +60,9 @@ class PageBase():
         # create alert object
         alert = Alert(self.driver)
         alert.accept()
+
+    def switch_iframe(self, locator):
+        self.driver.switch_to.frame(self.find_element(locator, True))
+
+    def switch_default_content(self):
+        self.driver.switch_to.default_content()
