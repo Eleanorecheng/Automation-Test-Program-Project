@@ -58,7 +58,7 @@ class PageBase():
 
     def accept_alert(self):
         # create alert object
-        alert = Alert(self.driver)
+        alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
         alert.accept()
 
     def switch_iframe(self, locator):

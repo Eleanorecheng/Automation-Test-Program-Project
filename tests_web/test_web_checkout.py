@@ -47,11 +47,10 @@ def test_checkout_with_invalid_values(driver, invalid_checkout_data):
     login_page = LoginPage(driver)
 
     with allure.step("Login"):
-        driver.get(f"{os.getenv('DOMAIN')}/profile.html")
+        driver.get(f"{os.getenv('DOMAIN')}/login.html")
         login_page.input_email_and_password_to_login("vexille0831@gmail.com", "@gt_0000")
         login_page.accept_alert()
 
-    # Login Success
     with allure.step("Add product to shopping Cart"):
         driver.get(f"{os.getenv('DOMAIN')}/product.html?id=201807201824")
         product_page.select_color()
@@ -64,7 +63,6 @@ def test_checkout_with_invalid_values(driver, invalid_checkout_data):
     with allure.step("Go to shopping Cart"):
         header_page.click_cart_icon()
         assert driver.current_url == f"{os.getenv('DOMAIN')}/cart.html"
-        time.sleep(1)
 
     with allure.step("Input Checkout info"):
         checkout_page.input_fields(invalid_checkout_data['Receiver'], invalid_checkout_data['Email'],
@@ -79,7 +77,7 @@ def test_checkout_with_invalid_values(driver, invalid_checkout_data):
     with allure.step("Click checkout button"):
         checkout_page.click_checkout_btn()
 
-    with allure.step("Check error message in pop up"):
+    with allure.step("Check error message"):
         get_alert = product_page.get_alert_message()
-        assert get_alert == invalid_checkout_data['Alert Msg'], f'Wrong alert message'
-
+        assert get_alert == invalid_checkout_data['Alert Msg'], f'Wrong alert message: {get_alert}'
+        login_page.accept_alert()
