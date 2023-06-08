@@ -35,7 +35,7 @@ class CheckoutPage(PageBase):
 
     def get_deliver_time(self, deliver_time):
        # return self.find_element((By.XPATH, f"//label[text() ={deliver_time}]/input"))
-         return self.find_element((By.XPATH, f'//label[text()="{deliver_time}"]'))
+         return self.find_element((By.XPATH, f'//label[text()="{deliver_time}"]'),throw_exception=False)
     def transform_deliver_time(self, data_deliver_time):
         if data_deliver_time == 'Morning':
             return '08:00-12:00'
