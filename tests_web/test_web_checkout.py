@@ -32,8 +32,8 @@ def test_checkout_with_empty_cart(driver, login_in_parallel):
         get_alert = checkout_page.get_alert_message()
         assert get_alert == "尚未選購商品", f'Wrong alert message'
         checkout_page.accept_alert()
-    with allure.step("Redirect to login page"):
-        assert driver.current_url == f"{os.getenv('DOMAIN')}/login.html"
+    with allure.step("Redirect to cart page"):
+        assert driver.current_url == f"{os.getenv('DOMAIN')}/cart.html"
     # 要補 login 狀態跟未 login 狀態
 
 
@@ -43,11 +43,6 @@ def test_checkout_with_invalid_values(driver, invalid_checkout_data, login_in_pa
     header_page = HeaderPage(driver)
     checkout_page = CheckoutPage(driver)
     product_page = ProductPage(driver)
-
-    # with allure.step("Login"):
-    #     driver.get(f"{os.getenv('DOMAIN')}/login.html")
-    #     login_page.input_email_and_password_to_login("vexille0831@gmail.com", "@gt_0000")
-    #     login_page.accept_alert()
 
     with allure.step("Add product to shopping Cart"):
         driver.get(f"{os.getenv('DOMAIN')}/product.html?id=201807201824")
