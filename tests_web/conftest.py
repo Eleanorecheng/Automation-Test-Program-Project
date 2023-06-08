@@ -17,7 +17,7 @@ else:
 @pytest.fixture()
 def driver():
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
@@ -52,3 +52,28 @@ def login(driver, request):
 
     with allure.step("Input email and password to login"):
         login_page.input_email_and_password_to_login(email, password)
+
+@pytest.fixture()
+def login_in_parallel(driver, worker_id):
+    driver.get(f"{os.getenv('DOMAIN')}/login.html")
+    login_page = LoginPage(driver)
+
+    # email = os.getenv('EMAIL')
+    # password = os.getenv('PASSWORD')
+
+    worker_id = os.environ.get('PYTEST_XDIST_WORKER')
+    if worker_id == 'gw0':
+        email = os.environ.get('EMAIL_1')
+        password = os.environ.get('PASSWORD_1')
+    elif worker_id == 'gw1':
+        email = os.environ.get('EMAIL_2')
+        password = os.environ.get('PASSWORD_2')
+    else:
+        email = os.environ.get('EMAIL')
+        password = os.environ.get('PASSWORD')
+
+    with allure.step("Input email and password to login"):
+        login_page.input_email_and_password_to_login(email, password)
+        get_alert = login_page.get_alert_message()
+        assert get_alert == "Login Success", f'Wrong alert message'
+        login_page.accept_alert()
