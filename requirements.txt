@@ -5,6 +5,7 @@ urllib3==1.26.6
 mysql-connector-python==8.0.33
 PyMySQL==1.0.3
 webdriver-manager==3.8.6
+openpyxl==3.1.2
 PyJWT==2.7.0
 pytest-xdist==3.3.1
 numpy==1.19.1
