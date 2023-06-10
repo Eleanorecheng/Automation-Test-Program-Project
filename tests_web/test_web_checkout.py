@@ -113,8 +113,8 @@ def test_checkout_with_valid_values(driver, valid_checkout_data, login_in_parall
         assert f"{os.getenv('DOMAIN')}/thankyou.html" in driver.current_url
         checkout_page.check_thank_you_title()
         order_info_list = checkout_page.get_order_info()
-        assert order_info_list['receiver'] == valid_checkout_data['Receiver'], f'Wrong Receiver Info: {order_info_list["receiver"]}'
-        assert order_info_list['email'] == valid_checkout_data['Email'], f'Wrong Receiver Info: {order_info_list["email"]}'
-        assert order_info_list['mobile'] == valid_checkout_data['Mobile'], f'Wrong Receiver Info: {order_info_list["mobile"]}'
-        assert order_info_list['address'] == valid_checkout_data['Address'], f'Wrong Receiver Info: {order_info_list["address"]}'
+        assert order_info_list["receiver"] == valid_checkout_data['Receiver'], f'Wrong Receiver Info: {order_info_list["receiver"]}'
+        assert order_info_list["email"] == valid_checkout_data['Email'], f'Wrong Receiver Info: {order_info_list["email"]}'
+        assert order_info_list["mobile"] == valid_checkout_data['Mobile'], f'Wrong Receiver Info: {order_info_list["mobile"]}'
+        assert order_info_list["address"] == valid_checkout_data['Address'], f'Wrong Receiver Info: {order_info_list["address"]}'
         # assert order_info_list['deliver time'] == valid_checkout_data['Deliver Time'], f'Wrong Receiver Info: {order_info_list["deliver time"]}'
