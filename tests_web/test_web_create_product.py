@@ -1,7 +1,5 @@
 import os
-
 import pytest
-from page_objects.header_page import HeaderPage
 from page_objects.create_product_page import CreateProductPage
 from test_data.test_data_from_excel import TestData
 

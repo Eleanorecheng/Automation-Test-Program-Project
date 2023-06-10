@@ -1,6 +1,3 @@
-import random
-import time
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
@@ -26,7 +23,6 @@ class ShoppingCartPage(PageBase):
     def click_cart_icon(self):
         elem_cart_icon = self.find_element(self.cart_icon, clickable=True, waiting_time=15)
         elem_cart_icon.click()
-        time.sleep(3)
         self.find_element(self.cart_header_number)
         logger.info(f'Wait until cart-header shows up')
 
