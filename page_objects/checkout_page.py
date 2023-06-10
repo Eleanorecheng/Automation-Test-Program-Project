@@ -1,6 +1,3 @@
-import os
-import time
-
 from selenium.webdriver.common.by import By
 from utils.page_base import PageBase
 from utils.database_utils import DatabaseUtil

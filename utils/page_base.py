@@ -1,4 +1,7 @@
+import os
+
 from selenium.webdriver import Keys
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.alert import Alert
@@ -66,3 +69,13 @@ class PageBase():
 
     def switch_default_content(self):
         self.driver.switch_to.default_content()
+
+    # select item from select list
+    def select_item(self, locator, option):
+        select = Select(self.find_element(locator))
+        select.select_by_visible_text(option)
+
+    # get selected item's text
+    def get_selected_item_value(self, locator):
+        select = Select(self.find_element(locator))
+        return select.first_selected_option.text

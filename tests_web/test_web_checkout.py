@@ -1,6 +1,4 @@
 import os
-import time
-
 import pytest
 from page_objects.checkout_page import CheckoutPage
 from page_objects.header_page import HeaderPage
@@ -9,7 +7,6 @@ from test_data.test_data_from_excel import TestData
 
 import allure
 import logging
-
 logger = logging.getLogger()
 
 test_data = TestData()
@@ -116,7 +113,6 @@ def test_checkout_with_valid_values(driver, valid_checkout_data, login_in_parall
         assert f"{os.getenv('DOMAIN')}/thankyou.html" in driver.current_url
         checkout_page.check_thank_you_title()
         order_info_list = checkout_page.get_order_info()
-        time.sleep(1)
         assert order_info_list['receiver'] == valid_checkout_data['Receiver'], f'Wrong Receiver Info: {order_info_list["receiver"]}'
         assert order_info_list['email'] == valid_checkout_data['Email'], f'Wrong Receiver Info: {order_info_list["email"]}'
         assert order_info_list['mobile'] == valid_checkout_data['Mobile'], f'Wrong Receiver Info: {order_info_list["mobile"]}'

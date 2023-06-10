@@ -24,8 +24,5 @@ class TestData():
         # checkout_invalid_list.append(data_dict)
         # return data_dict
 
-    # def replace_term(self, term):
-    #     if 'chars' in term:
-    #         term = term.replace('chars', "")
-    #         result = 'B' * int(term)
-    #         return result
+    def get_data_file_url(self):
+        return os.path.dirname(os.path.abspath(__file__))
