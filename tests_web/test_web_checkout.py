@@ -72,6 +72,7 @@ def test_checkout_with_invalid_values(driver, invalid_checkout_data, login_in_pa
         assert get_alert == invalid_checkout_data['Alert Msg'], f'Wrong alert message: {get_alert}'
         product_page.accept_alert()
 
+@allure.story("Scenario: Checkout with valid values (3 Test Cases)")
 @pytest.mark.parametrize('valid_checkout_data', test_data.read_data('Checkout with Valid Value'))
 def test_checkout_with_valid_values(driver, valid_checkout_data, login_in_parallel):
     header_page = HeaderPage(driver)

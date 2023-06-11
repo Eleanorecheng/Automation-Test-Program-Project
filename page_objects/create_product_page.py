@@ -11,7 +11,7 @@ class CreateProductPage(PageBase):
     main_image = (By.XPATH, '//input[@name="main_image"]')
     submit = (By.XPATH, '//input[@value="Create"]')
 
-    id = (By.XPATH, )
+    id = (By.XPATH,)
     test_data = TestData()
 
     def elem_input_field(self, item):
@@ -75,10 +75,14 @@ class CreateProductPage(PageBase):
 
     def get_product_name_in_products_list(self, product_title):
         locator = (By.XPATH, f'//td[@id="product_title" and text() ="{product_title}"]')
-        return self.find_element(locator).text
+        return self.find_element(locator, throw_exception=False)
+
+    def locator_delete_button(self, product_title):
+        return (By.XPATH, f'//td[@id="product_title" and text() ="{product_title}"]//following-sibling::td/button')
 
     def delete_product(self, product_title):
-        locator = (By.XPATH, f'//td[@id="product_title" and text() ="{product_title}"]//following-sibling::td/button')
-        self.find_element(locator, clickable=True).click()
+        self.find_element(self.locator_delete_button(product_title), clickable=True).click()
 
-
+    def check_product_is_existing_beforehand(self, product_title):
+        if self.get_product_name_in_products_list(product_title) != None:
+            self.delete_product(product_title)

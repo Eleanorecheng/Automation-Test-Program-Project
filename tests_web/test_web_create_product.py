@@ -16,6 +16,7 @@ test_data = TestData()
 def test_create_product_success(driver, login_in_parallel, create_product_success):
     create_product_page = CreateProductPage(driver)
     driver.get(f"{os.getenv('DOMAIN')}/admin/products.html")
+    create_product_page.check_product_is_existing_beforehand(create_product_success['Title'])
 
     with allure.step("Fill in Product"):
         driver.get(f"{os.getenv('DOMAIN')}/admin/product_create.html")
@@ -42,7 +43,7 @@ def test_create_product_success(driver, login_in_parallel, create_product_succes
 
     with allure.step("Go to products list"):
         driver.get(f"{os.getenv('DOMAIN')}/admin/products.html")
-        assert create_product_page.get_product_name_in_products_list(create_product_success['Title']) == \
+        assert create_product_page.get_product_name_in_products_list(create_product_success['Title']).text == \
                create_product_success['Title'], f'Product not in the list'
 
     with allure.step("Delete product"):
@@ -59,6 +60,7 @@ allure.story("Scenario: Create Product with Invalid Value (20 Test Cases)")
 def test_create_product_failed(driver, login_in_parallel, create_product_failed):
     create_product_page = CreateProductPage(driver)
     driver.get(f"{os.getenv('DOMAIN')}/admin/products.html")
+    create_product_page.check_product_is_existing_beforehand(create_product_failed['Title'])
 
     with allure.step("Fill in Product"):
         driver.get(f"{os.getenv('DOMAIN')}/admin/product_create.html")
@@ -90,6 +92,7 @@ allure.story("Scenario: Create Product without login")
 def test_create_product_without_login(driver):
     create_product_page = CreateProductPage(driver)
     driver.get(f"{os.getenv('DOMAIN')}/admin/product_create.html")
+    create_product_page.check_product_is_existing_beforehand('Title')
 
     with allure.step("Fill in Product"):
         create_product_page.input_field_dropdown('Men')
