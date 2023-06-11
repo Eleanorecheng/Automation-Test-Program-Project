@@ -31,7 +31,6 @@ class CheckoutPage(PageBase):
 
     def show_form_title(self):
         self.find_element(self.form_title)
-        self.find_element(self.input_field_receiver)
 
     def get_deliver_time(self, deliver_time):
         # return self.find_element((By.XPATH, f"//label[text() ={deliver_time}]/input"))
@@ -73,18 +72,19 @@ class CheckoutPage(PageBase):
 
     def check_thank_you_title(self):
         self.find_element(self.thankyou_msg)
+        self.find_element(self.form_title)
 
     def get_order_info_element(self, info_item):
         # return self.find_element((By.XPATH, f"//label[text() ={deliver_time}]/input"))
         return self.find_element(
-            (By.XPATH, f'//div[text()="{info_item}"]/following-sibling::div[@class="form__field-value"]'))
+            (By.XPATH, f'//div[text()="{info_item}"]/following-sibling::div[@class="form__field-value"]')).text
 
     def get_order_info(self):
         order_info_list = {
-            'receiver': self.get_order_info_element('收件人: ').text,
-            'email': self.get_order_info_element('Email: ').text,
-            'mobile': self.get_order_info_element('手機: ').text,
-            'address': self.get_order_info_element('地址: ').text,
-            'deliver time': self.get_order_info_element('配送時間: ').text
+            'receiver': self.get_order_info_element('收件人: '),
+            'email': self.get_order_info_element('Email: '),
+            'mobile': self.get_order_info_element('手機: '),
+            'address': self.get_order_info_element('地址: '),
+            'deliver time': self.get_order_info_element('配送時間: ')
         }
         return order_info_list
