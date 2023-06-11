@@ -71,8 +71,8 @@ class CheckoutPage(PageBase):
         self.switch_default_content()
 
     def check_thank_you_title(self):
-        self.find_element(self.thankyou_msg)
-        self.find_element(self.form_title)
+        self.find_element(self.thankyou_msg, 10)
+        self.find_element(self.form_title, 20)
 
     def get_order_info_element(self, info_item):
         # return self.find_element((By.XPATH, f"//label[text() ={deliver_time}]/input"))
