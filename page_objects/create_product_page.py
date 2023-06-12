@@ -1,5 +1,6 @@
-from selenium.webdriver.common.by import By
+import logging
 
+from selenium.webdriver.common.by import By
 from test_data.test_data_from_excel import TestData
 from utils.page_base import PageBase
 
@@ -16,33 +17,54 @@ class CreateProductPage(PageBase):
 
     def elem_input_field(self, item):
         locator = (By.XPATH, f'//input[@name="{item}"]')
+        logging.info("Get input field element", f'{self.find_element(locator)}')
         return self.find_element(locator)
 
     # category
     def input_field_dropdown(self, option):
         self.select_item(self.category, option)
+        logging.info("Select from drop down", f'{self.select_item(self.category, option)}')
 
     def input_field_description(self, content):
         self.input_and_send_key(self.find_element(self.description), content)
+        logging.info("Send description field")
 
-    def input_field_general(self, **kwargs):
+
+    def input_field_general(self, data):
+        self.input_field_send_key(title=data['Title'],
+                                 price=data['Price'],
+                                 texture=data['Texture'],
+                                 wash=data['Wash'],
+                                 place=data['Place of Product'],
+                                 note=data['Note'],
+                                 story=data['Story'])
+        logging.info("Input field and send key through testing data")
+
+
+    def input_field_send_key(self, **kwargs):
         for item, content in kwargs.items():
             self.input_and_send_key(self.elem_input_field(item), content)
+        logging.info("Input field and send key  with **kwargs")
+
 
     def select_product_color(self, color_names):
         if color_names == '全選':
             color_name_list = ['白色', '亮綠', '淺灰', '淺棕', '淺藍', '深藍', '粉紅']
         else:
             color_name_list = color_names.split(',')
+            logging.info("Split color names")
 
         for color_name in color_name_list:
             color_index = self.produt_color_mapping(color_name.strip())
             color = (By.XPATH, f'//input[@name="color_ids" and @value={color_index}]')
+            logging.info("Get color locator",color)
             self.find_element(color, clickable=True).click()
 
     def produt_color_mapping(self, color_name):
         color_mapping = ['白色', '亮綠', '淺灰', '淺棕', '淺藍', '深藍', '粉紅']
         color_id = color_mapping.index(color_name)
+        logging.info("Get color mapping index", color_id)
+
         return color_id + 1
 
     def select_product_size(self, size_names):
@@ -54,6 +76,8 @@ class CreateProductPage(PageBase):
         for size_name in size_name_list:
             size = (By.XPATH, f'//input[@name="sizes" and @value="{size_name.strip()}"]')
             self.find_element(size, clickable=True).click()
+            logging.info("Select product size", size)
+
 
     def upload_main_image(self, image_name):
         uploader = self.find_element(self.main_image)
@@ -81,7 +105,10 @@ class CreateProductPage(PageBase):
         return (By.XPATH, f'//td[@id="product_title" and text() ="{product_title}"]//following-sibling::td/button')
 
     def delete_product(self, product_title):
-        self.find_element(self.locator_delete_button(product_title), clickable=True).click()
+        try:
+            self.find_element(self.locator_delete_button(product_title), clickable=True).click()
+        except:
+            return None
 
     def check_product_is_existing_beforehand(self, product_title):
         if self.get_product_name_in_products_list(product_title) != None:

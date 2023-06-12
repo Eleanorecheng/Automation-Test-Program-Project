@@ -1,5 +1,4 @@
-import os
-
+import logging
 from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
@@ -13,6 +12,7 @@ class PageBase():
         self.driver = driver
 
     def find_element(self, locator, clickable=False, throw_exception=True, waiting_time=10):
+        logging.info(f"Locator: {locator}") # checkout case flaky issue
         try:
             if clickable:
                 element = WebDriverWait(self.driver, waiting_time).until(
