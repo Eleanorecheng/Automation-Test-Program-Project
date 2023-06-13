@@ -1,4 +1,6 @@
+import logging
 from selenium.webdriver import Keys
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.alert import Alert
@@ -10,6 +12,7 @@ class PageBase():
         self.driver = driver
 
     def find_element(self, locator, clickable=False, throw_exception=True, waiting_time=10):
+        logging.info(f"Locator: {locator}") # checkout case flaky issue
         try:
             if clickable:
                 element = WebDriverWait(self.driver, waiting_time).until(
@@ -52,13 +55,13 @@ class PageBase():
 
     def get_alert_message(self):
         # create alert object
-        alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
+        alert = WebDriverWait(self.driver, 15).until(EC.alert_is_present())
         # get alert text
         return alert.text
 
     def accept_alert(self):
         # create alert object
-        alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
+        alert = WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         alert.accept()
 
     def switch_iframe(self, locator):
@@ -66,3 +69,13 @@ class PageBase():
 
     def switch_default_content(self):
         self.driver.switch_to.default_content()
+
+    # select item from select list
+    def select_item(self, locator, option):
+        select = Select(self.find_element(locator))
+        select.select_by_visible_text(option)
+
+    # get selected item's text
+    def get_selected_item_value(self, locator):
+        select = Select(self.find_element(locator))
+        return select.first_selected_option.text

@@ -1,6 +1,4 @@
 import os
-import time
-
 import pytest
 from page_objects.checkout_page import CheckoutPage
 from page_objects.header_page import HeaderPage
@@ -9,7 +7,6 @@ from test_data.test_data_from_excel import TestData
 
 import allure
 import logging
-
 logger = logging.getLogger()
 
 test_data = TestData()
@@ -75,6 +72,7 @@ def test_checkout_with_invalid_values(driver, invalid_checkout_data, login_in_pa
         assert get_alert == invalid_checkout_data['Alert Msg'], f'Wrong alert message: {get_alert}'
         product_page.accept_alert()
 
+@allure.story("Scenario: Checkout with valid values (3 Test Cases)")
 @pytest.mark.parametrize('valid_checkout_data', test_data.read_data('Checkout with Valid Value'))
 def test_checkout_with_valid_values(driver, valid_checkout_data, login_in_parallel):
     header_page = HeaderPage(driver)
@@ -116,9 +114,9 @@ def test_checkout_with_valid_values(driver, valid_checkout_data, login_in_parall
         assert f"{os.getenv('DOMAIN')}/thankyou.html" in driver.current_url
         checkout_page.check_thank_you_title()
         order_info_list = checkout_page.get_order_info()
-        time.sleep(1)
-        assert order_info_list['receiver'] == valid_checkout_data['Receiver'], f'Wrong Receiver Info: {order_info_list["receiver"]}'
-        assert order_info_list['email'] == valid_checkout_data['Email'], f'Wrong Receiver Info: {order_info_list["email"]}'
-        assert order_info_list['mobile'] == valid_checkout_data['Mobile'], f'Wrong Receiver Info: {order_info_list["mobile"]}'
-        assert order_info_list['address'] == valid_checkout_data['Address'], f'Wrong Receiver Info: {order_info_list["address"]}'
-        # assert order_info_list['deliver time'] == valid_checkout_data['Deliver Time'], f'Wrong Receiver Info: {order_info_list["deliver time"]}'
+        print("order_info_list", order_info_list)
+        assert order_info_list["receiver"] == valid_checkout_data['Receiver'], f'Wrong Receiver Info: {order_info_list["receiver"]}'
+        assert order_info_list["email"] == valid_checkout_data['Email'], f'Wrong Receiver Info: {order_info_list["email"]}'
+        assert order_info_list["mobile"] == valid_checkout_data['Mobile'], f'Wrong Receiver Info: {order_info_list["mobile"]}'
+        assert order_info_list["address"] == valid_checkout_data['Address'], f'Wrong Receiver Info: {order_info_list["address"]}'
+        # assert order_info_list['deliver time'] == checkout_page.transform_deliver_time(valid_checkout_data['Deliver Time']), f'Wrong Receiver Info: {order_info_list["deliver time"]}'
