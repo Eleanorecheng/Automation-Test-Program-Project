@@ -17,13 +17,13 @@ class CreateProductPage(PageBase):
 
     def elem_input_field(self, item):
         locator = (By.XPATH, f'//input[@name="{item}"]')
-        logging.info("Get input field element", f'{self.find_element(locator)}')
+        logging.info("Get input field element")
         return self.find_element(locator)
 
     # category
     def input_field_dropdown(self, option):
         self.select_item(self.category, option)
-        logging.info("Select from drop down", f'{self.select_item(self.category, option)}')
+        logging.info("Select from drop down")
 
     def input_field_description(self, content):
         self.input_and_send_key(self.find_element(self.description), content)
@@ -54,34 +54,49 @@ class CreateProductPage(PageBase):
             color_name_list = color_names.split(',')
             logging.info("Split color names")
 
-        for color_name in color_name_list:
-            color_index = self.produt_color_mapping(color_name.strip())
-            color = (By.XPATH, f'//input[@name="color_ids" and @value={color_index}]')
-            logging.info("Get color locator",color)
-            self.find_element(color, clickable=True).click()
+        try:
+            for color_name in color_name_list:
+                color_index = self.produt_color_mapping(color_name.strip())
+                color = (By.XPATH, f'//input[@name="color_ids" and @value={color_index}]')
+                logging.info("Get color locator")
+                self.find_element(color, clickable=True).click()
+        except:
+            logging.info("No color given")
+            return
 
     def produt_color_mapping(self, color_name):
         color_mapping = ['白色', '亮綠', '淺灰', '淺棕', '淺藍', '深藍', '粉紅']
-        color_id = color_mapping.index(color_name)
-        logging.info("Get color mapping index", color_id)
-
-        return color_id + 1
+        try:
+            color_id = color_mapping.index(color_name)
+            logging.info("Get color mapping index")
+            return color_id + 1
+        except:
+            logging.info("No color index given")
+            return
 
     def select_product_size(self, size_names):
         if size_names == '全選':
             size_name_list = ['S', 'M', 'L', 'XL', 'F']
         else:
             size_name_list = size_names.split(',')
-
-        for size_name in size_name_list:
-            size = (By.XPATH, f'//input[@name="sizes" and @value="{size_name.strip()}"]')
-            self.find_element(size, clickable=True).click()
-            logging.info("Select product size", size)
+        try:
+            for size_name in size_name_list:
+                size = (By.XPATH, f'//input[@name="sizes" and @value="{size_name.strip()}"]')
+                logging.info("Select product size")
+                self.find_element(size, clickable=True).click()
+        except:
+            logging.info("No size given")
+            return
 
 
     def upload_main_image(self, image_name):
-        uploader = self.find_element(self.main_image)
-        uploader.send_keys(f'{self.test_data.get_data_file_url()}/{image_name}.jpg')
+        try:
+            uploader = self.find_element(self.main_image)
+            logging.info("Get main image")
+            uploader.send_keys(f'{self.test_data.get_data_file_url()}/{image_name}.jpg')
+        except:
+            logging.info("No main image given")
+            return
 
     def locator_other_image(self, index):
         return (By.XPATH, f'//input[@name="main_image"]//following-sibling::input[@type="file"][{index}]')

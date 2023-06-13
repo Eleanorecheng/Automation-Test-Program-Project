@@ -55,13 +55,13 @@ class PageBase():
 
     def get_alert_message(self):
         # create alert object
-        alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
+        alert = WebDriverWait(self.driver, 15).until(EC.alert_is_present())
         # get alert text
         return alert.text
 
     def accept_alert(self):
         # create alert object
-        alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
+        alert = WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         alert.accept()
 
     def switch_iframe(self, locator):
