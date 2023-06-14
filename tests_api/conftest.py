@@ -42,4 +42,6 @@ def api_login(session, worker_id):
     session.headers["Authorization"] = f'Bearer {request.get_json("data")["access_token"]}'
     logger.info("Set token to header")
 
+    return email
+
 

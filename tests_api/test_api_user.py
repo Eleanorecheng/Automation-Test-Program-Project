@@ -81,6 +81,7 @@ def test_logout_fail(session, api_login, Invalid_token, Status_code, Err_msg):
 @allure.story("Scenario: Test Profile Success")
 def test_profile_success(session, api_login, db_cursor):
     user_api = UserAPI(session)
+    login_response_email = api_login # api_login回傳分配到的 email 作為 db 查詢 (有點奇怪要想想怎麼改)
 
     with allure.step("Send profile API request and check status = 200"):
         info = user_api.profile()
@@ -88,7 +89,7 @@ def test_profile_success(session, api_login, db_cursor):
         assert info.response.status_code == 200, user_api.assert_message(info.response.status_code, 200)
 
     with allure.step("Get DB data"):
-        db_response = user_api.get_user_result_from_db(db_cursor, os.getenv("EMAIL"))
+        db_response = user_api.get_user_result_from_db(db_cursor, login_response_email)
 
     with allure.step("Verify response is correct"):
         assert response_json['provider'] == db_response['provider']
