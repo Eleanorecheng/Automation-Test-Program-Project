@@ -39,7 +39,7 @@ def api_login(session, worker_id):
     request = user_api.login('native',email, password)
     assert request.response.status_code == 200
 
-    session.headers["Authorization"] = f'{request.get_json("data")["access_token"]}'
+    session.headers["Authorization"] = f'Bearer {request.get_json("data")["access_token"]}'
     logger.info("Set token to header")
 
 

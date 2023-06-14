@@ -18,9 +18,9 @@ class UserAPI(APIBase):
     def get_json(self, title):
         return self.response.json()[title]
 
-    def get_user_result_from_db(self, db_cursor, email):
+    def get_user_result_from_db(self, db_cursor, input):
         database_utils = DatabaseUtil()
-        sql = f"SELECT * from user where email = '{email}'"
+        sql = f"SELECT * from user where email = '{input}'"
         return database_utils.get_db_result_no_column(db_cursor, sql)
 
     def assert_message(self, expected_result, actual_result):
@@ -28,9 +28,10 @@ class UserAPI(APIBase):
 
     def logout(self):
         url_logout= f'{os.getenv("API_DOMAIN")}/user/logout'
-
         self.api_request("post", url_logout)
         return self
 
     def profile(self):
-        pass
+        url_profile = f'{os.getenv("API_DOMAIN")}/user/profile'
+        self.api_request("get", url_profile)
+        return self

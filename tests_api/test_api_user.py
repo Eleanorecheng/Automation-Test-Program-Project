@@ -73,3 +73,23 @@ def test_logout_fail(session, api_login, Invalid_token, Status_code, Err_msg):
     with allure.step("Verify status code = 401/403"):
         assert request.response.status_code == Status_code, user_api.assert_message(request.response.status_code, Status_code)
         assert request.get_json('errorMsg') == Err_msg, user_api.assert_message(request.get_json('errorMsg'), Err_msg)
+
+@allure.story("Scenario: Test Profile Success")
+def test_profile_success(session, api_login, db_cursor):
+    user_api = UserAPI(session)
+
+    with allure.step("Send profile API request and check status = 200"):
+        info = user_api.profile()
+        response_json = info.get_json("data")
+        assert info.response.status_code == 200, user_api.assert_message(info.response.status_code, 200)
+
+    with allure.step("Get DB data"):
+        db_response = user_api.get_user_result_from_db(db_cursor, os.getenv("EMAIL"))
+
+    with allure.step("Verify response is correct"):
+        assert response_json['provider'] == db_response['provider']
+        assert response_json['name'] == db_response['name']
+        assert response_json['email'] == db_response['email']
+        assert response_json['picture'] == db_response['picture']
+
+
