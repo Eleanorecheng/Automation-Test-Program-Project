@@ -58,9 +58,6 @@ def login_in_parallel(driver, worker_id):
     driver.get(f"{os.getenv('DOMAIN')}/login.html")
     login_page = LoginPage(driver)
 
-    # email = os.getenv('EMAIL')
-    # password = os.getenv('PASSWORD')
-
     worker_id = os.environ.get('PYTEST_XDIST_WORKER')
     if worker_id == 'gw0':
         email = os.environ.get('EMAIL_1')

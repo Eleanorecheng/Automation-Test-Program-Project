@@ -27,15 +27,6 @@ class SearchPage(PageBase):
             else:
                 current_num = len(current_search)
 
-    # def get_search_result_info(self):
-    #     get_current_search_result = self.scroll_to_load_all_search_result()
-    #     if get_current_search_result is None:
-    #         get_current_search_result = []
-    #     search_products_list = []
-    #     for search_result in get_current_search_result:
-    #         search_products_list.append(search_result.text)
-    #     return search_products_list
-
     def get_search_result_from_db(self, db_cursor, input):
         sql = f"SELECT title from product where title like '%{input}%'"
         return self.database_util.get_db_result(db_cursor, sql, "title")

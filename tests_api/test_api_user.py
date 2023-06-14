@@ -92,4 +92,17 @@ def test_profile_success(session, api_login, db_cursor):
         assert response_json['email'] == db_response['email']
         assert response_json['picture'] == db_response['picture']
 
+@allure.story("Scenario: Test Profile Fail")
+@pytest.mark.parametrize("Invalid_token, Status_code, Err_msg", [("", 401, "Unauthorized"),("123", 403, "Forbidden")])
+def test_profile_fail(session, api_login, Invalid_token, Status_code, Err_msg):
+    user_api = UserAPI(session)
 
+    with allure.step("Set token to invalid"):
+        session.headers["Authorization"] = Invalid_token
+
+    with allure.step("Send Profile API request"):
+        request = user_api.profile()
+
+    with allure.step("Verify status code = 401/403"):
+        assert request.response.status_code == Status_code, user_api.assert_message(request.response.status_code, Status_code)
+        assert request.get_json('errorMsg') == Err_msg, user_api.assert_message(request.get_json('errorMsg'), Err_msg)

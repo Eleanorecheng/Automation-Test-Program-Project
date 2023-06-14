@@ -31,8 +31,6 @@ def test_checkout_with_empty_cart(driver, login_in_parallel):
         checkout_page.accept_alert()
     with allure.step("Redirect to cart page"):
         assert driver.current_url == f"{os.getenv('DOMAIN')}/cart.html"
-    # 要補 login 狀態跟未 login 狀態
-
 
 @allure.story("Scenario: Checkout with invalid values (17 Test Cases)")
 @pytest.mark.parametrize('invalid_checkout_data', test_data.read_data('Checkout with Invalid Value'))

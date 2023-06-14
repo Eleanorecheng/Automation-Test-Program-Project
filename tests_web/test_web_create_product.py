@@ -22,13 +22,6 @@ def test_create_product_success(driver, login_in_parallel, create_product_succes
         driver.get(f"{os.getenv('DOMAIN')}/admin/product_create.html")
         create_product_page.input_field_dropdown(create_product_success['Category'])
         create_product_page.input_field_description(create_product_success['Description'])
-        # create_product_page.input_field_general(title=create_product_success['Title'],
-        #                                         price=create_product_success['Price'],
-        #                                         texture=create_product_success['Texture'],
-        #                                         wash=create_product_success['Wash'],
-        #                                         place=create_product_success['Place of Product'],
-        #                                         note=create_product_success['Note'],
-        #                                         story=create_product_success['Story'])
         create_product_page.input_field_general(create_product_success)
         create_product_page.select_product_color(create_product_success['Colors'])
         create_product_page.select_product_size(create_product_success['Sizes'])
