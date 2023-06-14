@@ -3,6 +3,7 @@ import os
 from utils.api_utils import APIBase
 from utils.database_utils import DatabaseUtil
 
+
 class UserAPI(APIBase):
     def login(self, provider, email, password):
         url_login = f'{os.getenv("API_DOMAIN")}/user/login'
@@ -27,7 +28,7 @@ class UserAPI(APIBase):
         return f'Expected Result: {expected_result}, Actual Result: {actual_result} '
 
     def logout(self):
-        url_logout= f'{os.getenv("API_DOMAIN")}/user/logout'
+        url_logout = f'{os.getenv("API_DOMAIN")}/user/logout'
         self.api_request("post", url_logout)
         return self
 

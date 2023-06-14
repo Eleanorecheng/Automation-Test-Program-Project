@@ -39,12 +39,14 @@ def test_login_fail(session, invalid_login_data):
     user_api = UserAPI(session)
 
     with allure.step("Send Login API request"):
-        Info = user_api.login(invalid_login_data['Provider'],invalid_login_data['Email'], invalid_login_data['Password'])
+        Info = user_api.login(invalid_login_data['Provider'], invalid_login_data['Email'],
+                              invalid_login_data['Password'])
 
     with allure.step("Verify status code = 400 and error msg"):
-
         assert Info.response.status_code == 400, user_api.assert_message(Info.response.status_code, 400)
-        assert Info.get_json('errorMsg') == invalid_login_data['Message'], user_api.assert_message(Info.get_json('errorMsg'), invalid_login_data['Message'])
+        assert Info.get_json('errorMsg') == invalid_login_data['Message'], user_api.assert_message(
+            Info.get_json('errorMsg'), invalid_login_data['Message'])
+
 
 @allure.story("Scenario: Test Logout Success")
 def test_logout_success(session, api_login):
@@ -55,12 +57,12 @@ def test_logout_success(session, api_login):
 
     with allure.step("Verify status code = 200"):
         assert request.response.status_code == 200, user_api.assert_message(request.response.status_code, 200)
-        assert request.get_json('message') == 'Logout Success', user_api.assert_message(request.get_json('message'), 'Logout Success')
+        assert request.get_json('message') == 'Logout Success', user_api.assert_message(request.get_json('message'),
+                                                                                        'Logout Success')
 
 
 @allure.story("Scenario: Test Logout Failed")
-@pytest.mark.parametrize("Invalid_token, Status_code, Err_msg", [("", 401, "Unauthorized"),("123", 403, "Forbidden")])
-
+@pytest.mark.parametrize("Invalid_token, Status_code, Err_msg", [("", 401, "Unauthorized"), ("123", 403, "Forbidden")])
 def test_logout_fail(session, api_login, Invalid_token, Status_code, Err_msg):
     user_api = UserAPI(session)
 
@@ -71,8 +73,10 @@ def test_logout_fail(session, api_login, Invalid_token, Status_code, Err_msg):
         request = user_api.logout()
 
     with allure.step("Verify status code = 401/403"):
-        assert request.response.status_code == Status_code, user_api.assert_message(request.response.status_code, Status_code)
+        assert request.response.status_code == Status_code, user_api.assert_message(request.response.status_code,
+                                                                                    Status_code)
         assert request.get_json('errorMsg') == Err_msg, user_api.assert_message(request.get_json('errorMsg'), Err_msg)
+
 
 @allure.story("Scenario: Test Profile Success")
 def test_profile_success(session, api_login, db_cursor):
@@ -92,8 +96,9 @@ def test_profile_success(session, api_login, db_cursor):
         assert response_json['email'] == db_response['email']
         assert response_json['picture'] == db_response['picture']
 
+
 @allure.story("Scenario: Test Profile Fail")
-@pytest.mark.parametrize("Invalid_token, Status_code, Err_msg", [("", 401, "Unauthorized"),("123", 403, "Forbidden")])
+@pytest.mark.parametrize("Invalid_token, Status_code, Err_msg", [("", 401, "Unauthorized"), ("123", 403, "Forbidden")])
 def test_profile_fail(session, api_login, Invalid_token, Status_code, Err_msg):
     user_api = UserAPI(session)
 
@@ -104,5 +109,6 @@ def test_profile_fail(session, api_login, Invalid_token, Status_code, Err_msg):
         request = user_api.profile()
 
     with allure.step("Verify status code = 401/403"):
-        assert request.response.status_code == Status_code, user_api.assert_message(request.response.status_code, Status_code)
+        assert request.response.status_code == Status_code, user_api.assert_message(request.response.status_code,
+                                                                                    Status_code)
         assert request.get_json('errorMsg') == Err_msg, user_api.assert_message(request.get_json('errorMsg'), Err_msg)
