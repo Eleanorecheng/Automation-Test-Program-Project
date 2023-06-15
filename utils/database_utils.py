@@ -16,3 +16,7 @@ class DatabaseUtil():
         result = db_cursor.fetchone()
         logging.info(f'query result : {result}')
         return result
+
+    def get_user_result_from_db(self, db_cursor, input):
+        sql = f"SELECT * from user where email = '{input}'"
+        return self.get_db_result_no_column(db_cursor, sql)

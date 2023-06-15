@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 
 class APIBase:
@@ -9,6 +10,6 @@ class APIBase:
     def api_request(self, method, url, **kwargs):
         self.response = self.session.request(method, url, **kwargs)
 
-    def parse_datetime(self, string_value):
-        parsed_datetime = datetime.strptime(string_value[:-5], '%Y-%m-%dT%H:%M:%S')
-        return parsed_datetime
+    def get_json(self, title):
+        logging.info("get response in json format")
+        return self.response.json()[title]
