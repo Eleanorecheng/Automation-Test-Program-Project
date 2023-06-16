@@ -8,7 +8,7 @@ logger = logging.getLogger()
 
 @allure.story("Scenario: Login and Logout Success")
 @pytest.mark.parametrize("login", [{"email": os.environ.get('EMAIL'), "password": os.environ.get('PASSWORD')}],
-                         indirect=True)  # indirect=True 代表 pytest 惠譽找相對應的 fixture 名稱使用
+                         indirect=True)  # indirect=True 代表 pytest 會找相對應的 fixture 名稱使用
 def test_login_out_success(driver, login, db_cursor):
     login_page = LoginPage(driver)
 
@@ -37,7 +37,7 @@ def test_login_out_success(driver, login, db_cursor):
 
 @allure.story("Scenario: Login Failed with incorrect email or password")
 @pytest.mark.parametrize("login", [{"email": "echeng@netbase.com", "password": "12345"}],
-                         indirect=True)  # indirect=True 代表 pytest 惠譽找相對應的 fixture 名稱使用
+                         indirect=True)
 def test_login_fail_incorrect_email_psd(driver, login):
     login_page = LoginPage(driver)
 
@@ -49,7 +49,7 @@ def test_login_fail_incorrect_email_psd(driver, login):
 
 @allure.story("Scenario: Login with invalid access token")
 @pytest.mark.parametrize("login", [{"email": os.environ.get('EMAIL'), "password": os.environ.get('PASSWORD')}],
-                         indirect=True)  # indirect=True 代表 pytest 惠譽找相對應的 fixture 名稱使用
+                         indirect=True)
 def test_login_fail_invalid_token(driver, login):
     login_page = LoginPage(driver)
 

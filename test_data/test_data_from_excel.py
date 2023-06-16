@@ -19,6 +19,7 @@ class TestData():
             checkout_invalid_list.append(one_row.to_dict())
         return checkout_invalid_list
 
+        # 其他寫法
         # data_dict = df.to_dict('records')
         # checkout_invalid_list.append(data_dict)
         # return data_dict

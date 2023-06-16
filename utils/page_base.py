@@ -3,7 +3,6 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.alert import Alert
 
 
 class PageBase():
