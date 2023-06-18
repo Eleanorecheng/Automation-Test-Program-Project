@@ -251,11 +251,11 @@ def test_products_search_with_valid_product_id(session, db_cursor, default_api_l
 
 @allure.story("Scenario: Test Get Products Details With Invalid id")
 @pytest.mark.parametrize("id", ["aaa", -1, 0.026, 111111111111])
-def test_products_details_with_invalid_id(session, db_cursor, default_api_login, id):
+def test_products_details_with_invalid_product_id(session, db_cursor, default_api_login, product_id):
     products_details_api = ProductsDetailsAPI(session)
     api_command_handlr = APICommonHandler()
 
     with allure.step("Send products API request and check status = 400"):
-        info = products_details_api.products_by_details(id)
+        info = products_details_api.products_by_details(product_id)
         assert info.response.status_code == 400, api_command_handlr.assert_message(info.response.status_code, 400)
         assert info.get_json('errorMsg') == "Invalid Product ID", api_command_handlr.assert_message(info.get_json('errorMsg'), "Invalid Product ID")
