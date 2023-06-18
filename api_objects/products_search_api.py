@@ -1,24 +1,20 @@
 import os
-
 from utils.api_utils import APIBase
-from utils.database_utils import DatabaseUtil
-
 import logging
 
-class ProductsAPI(APIBase):
-    def products_by_category(self, category, paging):
+class ProductsSearchAPI(APIBase):
+    def products_by_search(self, keyword, paging):
         if paging != "":
-            url_products = f'{os.getenv("API_DOMAIN")}/products/{category}?paging={paging}'
+            url_products_search = f'{os.getenv("API_DOMAIN")}/products/search?keyword={keyword}&paging={paging}'
         else:
-            url_products = f'{os.getenv("API_DOMAIN")}/products/{category}'
+            url_products_search = f'{os.getenv("API_DOMAIN")}/products/search?keyword={keyword}'
 
-        self.api_request("get", url_products)
-        logging.info("Send products request")
+        self.api_request("get", url_products_search)
+        logging.info("Send products search request")
         return self
 
-    def products_by_category_no_category(self, paging):
-        url_products = f'{os.getenv("API_DOMAIN")}/products/?paging={paging}'
-
-        self.api_request("get", url_products)
-        logging.info("Send products request")
+    def products_by_search_without_keyword(self):
+        url_products_search = f'{os.getenv("API_DOMAIN")}/products/search?keyword='
+        self.api_request("get", url_products_search)
+        logging.info("Send products search request")
         return self

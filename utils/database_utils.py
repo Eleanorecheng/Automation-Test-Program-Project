@@ -29,11 +29,10 @@ class DatabaseUtil():
         sql = f"SELECT id, provider, email, name, picture, access_token, access_expired, login_at from user where email = '{input}'"
         return self.get_db_result_fetchone(db_cursor, sql)
 
-    # /products - id 去拿 product table 資訊
-
-    def get_products_count_from_db_by_page(self, db_cursor, category, paging):
-        sql_count = f"SELECT id FROM product WHERE category = '{category}' LIMIT {(paging+1)*6} UNION ALL SELECT FOUND_ROWS()"
-        return self.get_db_result_fetchone(db_cursor, sql_count)[0]
+    # /products -> id 去拿 product table 資訊
+    # def get_products_count_from_db_by_page(self, db_cursor, category, paging):
+    #     sql_count = f"SELECT id FROM product WHERE category = '{category}' LIMIT {(paging+1)*6} UNION ALL SELECT FOUND_ROWS()"
+    #     return self.get_db_result_fetchone(db_cursor, sql_count)[0]
     def get_products_result_from_db(self, db_cursor, id):
         sql = f"SELECT id, category, title, description, price, texture, wash, place, note, story \
             FROM product WHERE id = {id}"
@@ -93,6 +92,13 @@ class DatabaseUtil():
         sql = f"SELECT image FROM product_images WHERE product_id ={product_id}"
         images = [f"{os.environ.get('DOMAIN')}/assets/{product_id}/{filename['image']}" for filename in self.get_db_result_fetchall(db_cursor, sql)]
         return images
+
+
+
+    # /products search -> id 去拿 product table 資訊
+    def get_products_search_result_from_db(self, db_cursor, keyword):
+        sql = f"SELECT id, title FROM product where title like '%{keyword}%'"
+        return self.get_db_result_fetchone(db_cursor, sql)
 
 # def composite_variant_into_product(self, db_cursor, category, paging):
     #     db_products = []

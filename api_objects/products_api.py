@@ -1,8 +1,5 @@
 import os
-
 from utils.api_utils import APIBase
-from utils.database_utils import DatabaseUtil
-
 import logging
 
 class ProductsAPI(APIBase):
