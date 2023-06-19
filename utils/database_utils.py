@@ -15,13 +15,13 @@ class DatabaseUtil():
     def get_db_result_fetchone(self, db_cursor, sql):
         db_cursor.execute(sql)
         result = db_cursor.fetchone()
-        logging.info(f'query result : {result}')
+        # logging.info(f'query result : {result}')
         return result
 
     def get_db_result_fetchall(self, db_cursor, sql):
         db_cursor.execute(sql)
         result = db_cursor.fetchall()
-        logging.info(f'query result : {result}')
+        # logging.info(f'query result : {result}')
         return result
 
     # /login
@@ -29,11 +29,32 @@ class DatabaseUtil():
         sql = f"SELECT id, provider, email, name, picture, access_token, access_expired, login_at from user where email = '{input}'"
         return self.get_db_result_fetchone(db_cursor, sql)
 
-    # /products -> id 去拿 product table 資訊
-    # def get_products_count_from_db_by_page(self, db_cursor, category, paging):
-    #     sql_count = f"SELECT id FROM product WHERE category = '{category}' LIMIT {(paging+1)*6} UNION ALL SELECT FOUND_ROWS()"
-    #     return self.get_db_result_fetchone(db_cursor, sql_count)[0]
 
+    # /products -> id 去拿 product table 資訊
+    # 從 category 撈 db 的 id
+    def get_products_ids_by_category(self, db_cursor, category, paging):
+        if paging != "":
+            offset_start = paging * 6
+            offset_end = offset_start + 6
+            sql = f"SELECT id FROM product WHERE category = '{category}' LIMIT {offset_start}, {offset_end}"
+        else:
+            sql = f"SELECT id FROM product WHERE category = '{category}'"
+        db_data = self.get_db_result_fetchall(db_cursor, sql)
+        ids = [id['id'] for id in db_data]
+        return ids
+
+    def get_products_ids_by_keyword(self, db_cursor, keyword, paging):
+        if paging != "":
+            offset_start = paging * 6
+            offset_end = offset_start + 6
+            sql = f"SELECT id FROM product WHERE title LIKE '%{keyword}%' LIMIT {offset_start}, {offset_end}"
+        else:
+            sql = f"SELECT id FROM product WHERE title LIKE '%{keyword}%'"
+        db_data = self.get_db_result_fetchall(db_cursor, sql)
+        ids = [id['id'] for id in db_data]
+        return ids
+
+    # use id to query
     def get_products_result_from_db(self, db_cursor, id):
         sql = f"SELECT id, category, title, description, price, texture, wash, place, note, story \
             FROM product WHERE id = {id}"
