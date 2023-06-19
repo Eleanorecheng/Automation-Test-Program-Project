@@ -9,7 +9,7 @@ class APIBase:
 
     def api_request(self, method, url, **kwargs):
         logging.info(f"Request method: {method}")
-        logging.info(f"Request url: {self.url}")
+        logging.info(f"Request url: {url}")
         logging.info(f"Request Cookies: {self.session.cookies}")
         logging.info(f"Request headers: {self.session.headers}")
         self.response = self.session.request(method, url, **kwargs)
