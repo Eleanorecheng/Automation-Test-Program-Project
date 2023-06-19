@@ -33,6 +33,7 @@ class DatabaseUtil():
     # def get_products_count_from_db_by_page(self, db_cursor, category, paging):
     #     sql_count = f"SELECT id FROM product WHERE category = '{category}' LIMIT {(paging+1)*6} UNION ALL SELECT FOUND_ROWS()"
     #     return self.get_db_result_fetchone(db_cursor, sql_count)[0]
+
     def get_products_result_from_db(self, db_cursor, id):
         sql = f"SELECT id, category, title, description, price, texture, wash, place, note, story \
             FROM product WHERE id = {id}"
@@ -53,7 +54,7 @@ class DatabaseUtil():
 
     def composite_variants(self, db_cursor, product_id):
         variants = []
-        for value in enumerate(self.get_products_variants_result_from_db(db_cursor, product_id )):
+        for value in enumerate(self.get_products_variants_result_from_db(db_cursor, product_id)):
             variant = {
                 'color_code': f"{value[1]['code']}",
                 'size': f"{value[1]['size']}",
@@ -71,7 +72,7 @@ class DatabaseUtil():
 
     def composite_color(self, db_cursor, product_id):
         colors = []
-        for value in enumerate(self.get_products_color_result_from_db(db_cursor, product_id )):
+        for value in enumerate(self.get_products_color_result_from_db(db_cursor, product_id)):
             color = {
                 'code': value[1]['code'],
                 'name': value[1]['name']
@@ -99,25 +100,3 @@ class DatabaseUtil():
     def get_products_search_result_from_db(self, db_cursor, keyword):
         sql = f"SELECT id, title FROM product where title like '%{keyword}%'"
         return self.get_db_result_fetchone(db_cursor, sql)
-
-# def composite_variant_into_product(self, db_cursor, category, paging):
-    #     db_products = []
-    #     # product 會拿到指定 category 在 product table 中的資料
-    #     for product in self.get_products_result_from_db(db_cursor, category, paging):
-    #         # 把 Product_id 存起來丟去搜尋 variants
-    #         product_id_for_sql = product['id']
-    #         variants = []
-    #         # 處理variants
-    #         for value in enumerate(self.get_products_variants_result_from_db(db_cursor, category, product_id_for_sql)):
-    #             variant = {
-    #                 'color_code': f"{value[1]['code']}",
-    #                 'size': f"{value[1]['size']}",
-    #                 'stock': value[1]['stock']
-    #             }
-    #             variants.append(variant)
-    #             # 撈到 variants 存到 product list 中
-    #         product.update({"variants": variants})
-    #         # 組合後的 product 加到 product list
-    #         db_products.append(product)
-    #     return db_products
-
