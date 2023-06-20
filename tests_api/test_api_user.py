@@ -112,20 +112,20 @@ def test_profile_success(session, default_api_login, db_cursor):
 
 
 @allure.story("Scenario: Test Profile Fail")
-@pytest.mark.parametrize("Invalid_token, Status_code, Err_msg", [("", 401, "Unauthorized"), ("123", 403, "Forbidden")])
-def test_profile_fail(session, default_api_login, Invalid_token, Status_code, Err_msg):
+@pytest.mark.parametrize("invalid_token, status_code, err_msg", [("", 401, "Unauthorized"), ("123", 403, "Forbidden")])
+def test_profile_fail(session, default_api_login, invalid_token, status_code, err_msg):
     profile_api = ProfileAPI(session)
     api_command_handlr = APICommonHandler()
 
     with allure.step("Set token to invalid"):
-        session.headers["Authorization"] = Invalid_token
+        session.headers["Authorization"] = invalid_token
 
     with allure.step("Send Profile API request"):
         request = profile_api.profile()
 
     with allure.step("Verify status code = 401/403"):
-        assert request.response.status_code == Status_code, api_command_handlr.assert_message(
+        assert request.response.status_code == status_code, api_command_handlr.assert_message(
             request.response.status_code,
-            Status_code)
-        assert request.get_json('errorMsg') == Err_msg, api_command_handlr.assert_message(request.get_json('errorMsg'),
-                                                                                          Err_msg)
+            status_code)
+        assert request.get_json('errorMsg') == err_msg, api_command_handlr.assert_message(request.get_json('errorMsg'),
+                                                                                          err_msg)
