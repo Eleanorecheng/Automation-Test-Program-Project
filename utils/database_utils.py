@@ -38,7 +38,7 @@ class DatabaseUtil():
             offset_end = offset_start + 6
             sql = f"SELECT id FROM product WHERE category = '{category}' LIMIT {offset_start}, {offset_end}"
         else:
-            sql = f"SELECT id FROM product WHERE category = '{category}'"
+            sql = f"SELECT id FROM product WHERE category = '{category}' LIMIT 6"
         db_data = self.get_db_result_fetchall(db_cursor, sql)
         ids = [id['id'] for id in db_data]
         return ids

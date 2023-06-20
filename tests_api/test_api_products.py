@@ -11,7 +11,7 @@ import allure
 
 @allure.story("Scenario: Test Get Products With Valid Category")
 @pytest.mark.parametrize("category, paging",
-                         [("women", 0), ("women", 1), ("women", 2), ("men", 0), ("men", 1), ("accessories", 0),
+                         [("women", ""), ("women", 0), ("women", 1), ("women", 2), ("men", 0), ("men", 1), ("accessories", 0),
                           ("accessories", 1)])
 def test_products_with_valid_category(session, db_cursor, default_api_login, category, paging):
     products_api = ProductsAPI(session)
@@ -25,8 +25,7 @@ def test_products_with_valid_category(session, db_cursor, default_api_login, cat
 
     with allure.step("Get product_id by category in db and check # of products <= 6"):
         db_products_ids = database_utils.get_products_ids_by_category(db_cursor, category, paging)
-        if paging != "":
-            assert len(db_products_ids) <= 6, f'Expected Result: {len(db_products_ids)}, Actual Result: 6'
+        assert len(db_products_ids) <= 6, f'Expected Result: {len(db_products_ids)}, Actual Result: 6'
 
     with allure.step("Compare ids from db and response"):
         response_ids = [id.get('id') for id in response_json]
