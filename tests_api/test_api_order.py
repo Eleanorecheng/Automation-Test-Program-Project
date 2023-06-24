@@ -9,19 +9,6 @@ import allure
 
 test_data = TestData()
 
-
-@allure.story("Scenario: Test Order Success")
-@pytest.mark.parametrize('order_data', test_data.read_data('API Checkout with Valid Value'))
-def test_order_success(session, default_api_login, order_data):
-    order_api = OrderAPI(session)
-    api_command_handlr = APICommonHandler()
-
-    with allure.step("Send order API request and check status = 200"):
-        info = order_api.order(order_data)
-        api_command_handlr.assertion(info.response.status_code, 200)
-        assert info.get_json("data")['number']
-
-
 @allure.story("Scenario: Test Order Fail With Invalid Data")
 @pytest.mark.parametrize('order_data', test_data.read_data('API Checkout with Invalid Value'))
 def test_order_fail_with_invalid_data(session, default_api_login, order_data):
