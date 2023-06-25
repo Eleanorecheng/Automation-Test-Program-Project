@@ -6,7 +6,7 @@ class TestData():
         current_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(current_path)
 
-        df = pd.read_excel('Stylish_TestCase.xlsx', sheet_name=sheet_name) # remove dtype=str
+        df = pd.read_excel('Stylish_TestCase.xlsx', sheet_name=sheet_name,  dtype={'Mobile': str}) # remove dtype=str
 
         # 處理empty
         df = df.fillna('')

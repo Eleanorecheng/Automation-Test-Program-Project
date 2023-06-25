@@ -53,9 +53,9 @@ class OrderAPI(APIBase):
             "order": {
                 "shipping": test_data["Shipping"],
                 "payment": test_data["Payment"],
-                "subtotal": int(test_data["Subtotal"]),
-                "freight": int(test_data["Freight"]),
-                "total": int(test_data["Total"]),
+                "subtotal": test_data["Subtotal"],
+                "freight": test_data["Freight"],
+                "total": test_data["Total"],
                 "recipient": {
                     "name": test_data["Receiver"],
                     "phone": test_data["Mobile"],
@@ -69,8 +69,8 @@ class OrderAPI(APIBase):
                         "id": test_data["Id"],
                         "image": test_data["Image"],
                         "name": test_data["Name"],
-                        "price": int(test_data["Price"]),
-                        "qty": int(test_data["Qty"]),
+                        "price": test_data["Price"],
+                        "qty": test_data["Qty"],
                         "size": test_data["Size"]
                     }
                 ]
