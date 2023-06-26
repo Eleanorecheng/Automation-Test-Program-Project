@@ -55,15 +55,13 @@ def test_create_product_fail(session, db_cursor, default_api_login, product_data
         api_command_handlr.assertion(info.get_json('errorMsg'), product_data['Error Msg'])
 
     with allure.step("Delete product if product_id exists"):
-        try:
+        if 'data' in info.response.json():
             product_id = info.get_json('data')['product_id']
             def delete_product_finalizer():
                 with allure.step("Delete product and check delete alert"):
                     delete_product_api.delete_product(product_id)
 
             request.addfinalizer(delete_product_finalizer)
-        except:
-            pass
 
 @allure.story("Scenario: Test Create Product Without Login")
 @pytest.mark.parametrize('product_data', test_data.read_data('API Create Product Success'))
@@ -83,12 +81,11 @@ def test_create_product_with_invalid_access(session, product_data, authorization
         api_command_handlr.assertion(info.get_json('errorMsg'), authorization_data['err_msg'])
 
     with allure.step("Delete product if product_id exists"):
-        try:
+        if 'data' in info.response.json():
             product_id = info.get_json('data')['product_id']
+
             def delete_product_finalizer():
                 with allure.step("Delete product and check delete alert"):
                     delete_product_api.delete_product(product_id)
 
             request.addfinalizer(delete_product_finalizer)
-        except:
-            pass
