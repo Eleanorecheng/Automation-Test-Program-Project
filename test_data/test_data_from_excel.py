@@ -6,11 +6,13 @@ class TestData():
         current_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(current_path)
 
-        df = pd.read_excel('Stylish_TestCase.xlsx', sheet_name=sheet_name, dtype=str)
+        df = pd.read_excel('Stylish_TestCase.xlsx', sheet_name=sheet_name,  dtype={'Mobile': str}) # remove dtype=str
+
         # 處理empty
         df = df.fillna('')
         # 處理 N chars case
-        df = df.applymap(lambda x: int(x.replace('chars', '').strip()) * 'B' if 'chars' in x else str(x))
+        df = df.applymap(lambda x: int(x.replace('chars', '').strip()) * 'B' if isinstance(x, str) and 'chars' in x else x)
+
         # 一定要加if不然會把未replace的data轉成int
 
         checkout_invalid_list = []

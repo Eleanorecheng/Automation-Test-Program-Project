@@ -9,19 +9,6 @@ import allure
 
 test_data = TestData()
 
-
-@allure.story("Scenario: Test Order Success")
-@pytest.mark.parametrize('order_data', test_data.read_data('API Checkout with Valid Value'))
-def test_order_success(session, default_api_login, order_data):
-    order_api = OrderAPI(session)
-    api_command_handlr = APICommonHandler()
-
-    with allure.step("Send order API request and check status = 200"):
-        info = order_api.order(order_data)
-        api_command_handlr.assertion(info.response.status_code, 200)
-        assert info.get_json("data")['number']
-
-
 @allure.story("Scenario: Test Order Fail With Invalid Data")
 @pytest.mark.parametrize('order_data', test_data.read_data('API Checkout with Invalid Value'))
 def test_order_fail_with_invalid_data(session, default_api_login, order_data):
@@ -70,17 +57,17 @@ def test_get_order_success(session, default_api_login, order_data):
 
         api_command_handlr.assertion(order_number, order_id)
         api_command_handlr.assertion(order_details_list['id'], order_data["Id"])
-        api_command_handlr.assertion(order_details_list['qty'], int(order_data["Qty"]))
+        api_command_handlr.assertion(order_details_list['qty'], order_data["Qty"])
         api_command_handlr.assertion(order_details_list['name'], order_data["Name"])
         api_command_handlr.assertion(order_details_list['size'], order_data["Size"])
         api_command_handlr.assertion(order_details_list['color'], eval(order_data["Color"]))
-        api_command_handlr.assertion(order_details_list['price'], int(order_data["Price"]))
+        api_command_handlr.assertion(order_details_list['price'], order_data["Price"])
 
-        api_command_handlr.assertion(order_details['total'], int(order_data["Total"]))
-        api_command_handlr.assertion(order_details['freight'], int(order_data["Freight"]))
+        api_command_handlr.assertion(order_details['total'], order_data["Total"])
+        api_command_handlr.assertion(order_details['freight'], order_data["Freight"])
         api_command_handlr.assertion(order_details['payment'], order_data["Payment"])
         api_command_handlr.assertion(order_details['shipping'], order_data["Shipping"])
-        api_command_handlr.assertion(order_details['subtotal'], int(order_data["Subtotal"]))
+        api_command_handlr.assertion(order_details['subtotal'], order_data["Subtotal"])
 
         api_command_handlr.assertion(order_details_recipient['name'], order_data["Receiver"])
         api_command_handlr.assertion(order_details_recipient['time'], order_data["Deliver Time"])

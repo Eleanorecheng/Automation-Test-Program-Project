@@ -86,7 +86,7 @@ class DatabaseUtil():
 
 
     def get_products_color_result_from_db(self, db_cursor, product_id):
-        sql = f"SELECT DISTINCT color.code, color.name \
+        sql = f"SELECT DISTINCT color.code, color.name, color.id \
         FROM variant INNER JOIN product on product.id = variant.product_id \
         INNER JOIN color on color.id = variant.color_id WHERE variant.product_id = {product_id}"
         return self.get_db_result_fetchall(db_cursor, sql)
@@ -115,9 +115,29 @@ class DatabaseUtil():
         images = [f"{os.environ.get('DOMAIN')}/assets/{product_id}/{filename['image']}" for filename in self.get_db_result_fetchall(db_cursor, sql)]
         return images
 
-
-
     # /products search -> id 去拿 product table 資訊
     def get_products_search_result_from_db(self, db_cursor, keyword):
         sql = f"SELECT id, title FROM product where title like '%{keyword}%'"
         return self.get_db_result_fetchone(db_cursor, sql)
+
+    # /admin/product -> id 去拿 product, colors, sizes, other_images 資訊
+    def get_product_info_by_id_from_db(self,db_cursor,  product_id):
+        sql_product = f"SELECT p.category, title, description, price, texture,\
+                      wash, place, note, story, main_image \
+                      FROM product as p WHERE p.id = {product_id}"
+
+        sql_color = f"SELECT Distinct v.color_id FROM variant as v WHERE v.product_id = {product_id}"
+        sql_size = f"SELECT Distinct v.size FROM variant as v WHERE v.product_id = {product_id}"
+        sql_image =f"SELECT image FROM product_images WHERE product_id = {product_id}"
+
+        product = self.get_db_result_fetchone(db_cursor, sql_product)
+        color = [str(color['color_id']) for color in self.get_db_result_fetchall(db_cursor, sql_color)]
+        size = [size['size'] for size in self.get_db_result_fetchall(db_cursor, sql_size)]
+        other_image = [image['image'].strip('.jpg') for image in self.get_db_result_fetchall(db_cursor, sql_image)]
+
+        product['main_image'] = product['main_image'].strip('.jpg')
+        product['color_ids'] = color
+        product['sizes'] = size
+        product['other_images'] = other_image
+
+        return product
